@@ -86,8 +86,9 @@ brand-new releases with inflated early ratings.
 
 ## Query Optimization
 
-An index on `movies(release_year)` reduced the estimated rows examined from about **339,615 to
-4,161** (roughly 80x fewer) for a "movies released in 1994 with 100K+ votes" query, as shown by `EXPLAIN`.
+An index on `movies(release_year)` changed the query plan: before, MySQL did a full scan of
+`ratings` (~339,615 estimated rows); after, it looks up the ~4,161 movies from 1994 directly
+through the index, as shown by `EXPLAIN`. The optimizer's row estimates dropped roughly 80x.
 
 | Before | After |
 |---|---|
